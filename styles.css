@@ -211,3 +211,37 @@ input[type="checkbox"]:checked {
     background-color: #007bff;
 }
 
+/* Limit text size and add ellipsis */
+table td {
+    max-width: 150px; /* Adjust the width as needed */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+}
+
+.tooltip-container {
+    position: relative; /* Contenedor relativo para posicionar el tooltip */
+    overflow: visible; /* Permitir que el contenido salga del contenedor */
+}
+
+.tooltip {
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 10px; /* Espaciado interno para legibilidad */
+    border-radius: 5px;
+    z-index: 1000; /* Asegurar que el tooltip esté por encima de otros elementos */
+    display: none; /* Ocultar por defecto */
+    white-space: normal; /* Permitir texto en múltiples líneas */
+    max-width: 300px; /* Ancho máximo del tooltip */
+    word-wrap: break-word; /* Ajustar palabras largas */
+    top: calc(100% + 5px); /* Mostrar debajo del contenedor con un pequeño margen */
+    left: 50%; /* Centrar horizontalmente respecto al contenedor */
+    transform: translateX(-50%);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Sombra para destacar */
+}
+
+.tooltip-container:hover .tooltip {
+    display: block; /* Mostrar el tooltip al pasar el mouse */
+}

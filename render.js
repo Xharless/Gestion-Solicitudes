@@ -46,8 +46,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${solicitud.id}</td>
                     <td class="${dateclass}">${dateform}</td>
                     <td>${solicitud.tipo}</td>
-                    <td>${solicitud.telefono}</td>             
-                    <td>${solicitud.informacion}</td>
+                    <td>${solicitud.telefono}</td>   
+                    <td class="tooltip-container">
+                        ${solicitud.informacion.length > 20 ? solicitud.informacion.substring(0, 20) + '...' : solicitud.informacion}
+                        <div class="tooltip">${solicitud.informacion}</div>
+                    </td>
                     <td><input type="checkbox" ${solicitud.completado ? 'checked' : ''} data-id="${solicitud.id}"></td>
                     <td>
                         <button class="editBtn" data-id="${solicitud.id}"><i class="fas fa-edit"></i></button>
@@ -93,11 +96,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
 
+            // manejo de eventos para mostrar el tooltip
+            document.querySelectorAll('.tooltip-container').forEach(container => {
+                container.addEventListener('mouseenter', (event) => {
+                    const tooltip = container.querySelector('.tooltip');
+                    tooltip.style.display = 'block';
+                });
+                container.addEventListener('mouseleave', (event) => {
+                    const tooltip = container.querySelector('.tooltip');
+                    tooltip.style.display = 'none';
+                });
+            });
+
         } else {
             tbody.innerHTML = '<tr><td colspan="7">No hay solicitudes registradas</td></tr>';
         }
 
     });
+
+    
 
     const modal = document.getElementById('solicitudModal');
     const editModal = document.getElementById('editModal');
