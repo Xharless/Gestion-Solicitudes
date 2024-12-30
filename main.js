@@ -32,7 +32,7 @@ app.on('ready', createWindow);
 
 // Insertar los datos de la solicitud en la BD
 ipcMain.on('add-solicitud', (event, solicitud) => {
-    console.log('Datos recibidos para insertar:', solicitud);
+    
     const query = `INSERT INTO solicitud (id, date, tipo, telefono, informacion, completado) VALUES (?, ?, ?, ?, ?, ?)`;
     const params = [
         solicitud.id,
@@ -54,13 +54,23 @@ ipcMain.on('add-solicitud', (event, solicitud) => {
     });
 });
 
+ipcMain.on('update-completado', (event, { id, completado }) => {
+    db.run(`UPDATE solicitud SET completado = ? WHERE id = ?`, [completado, id], function(err) {
+        if (err) {
+            return console.log('Error al actualizar datos', err.message);
+        }
+        console.log(`Fila actualizada con el ID ${id}`);
+        sendSolicitudes();
+    });
+});
+
 // Mostrar los datos en la tabla
 function sendSolicitudes() {
     db.all(`SELECT * FROM solicitud`, [], (err, rows) => {
         if (err) {
             console.error('Error al recuperar datos:', err.message);
         } else {
-            console.log('Datos obtenidos de la BD:', rows);
+            
             BrowserWindow.getAllWindows().forEach(win => {
                 win.webContents.send('solicitudes', rows);
             });

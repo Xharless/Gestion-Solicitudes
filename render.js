@@ -27,9 +27,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${solicitud.tipo}</td>
                 <td>${solicitud.telefono}</td>
                 <td>${solicitud.informacion}</td>
-                <td><input type="checkbox" ${solicitud.completado ? 'checked' : ''} disabled></td>
+                <td><input type="checkbox" ${solicitud.completado ? 'checked' : ''} data-id="${solicitud.id}"></td>
             `;
             tbody.appendChild(row);
+        });
+         // Agregar manejador de eventos para los checkboxes
+        document.querySelectorAll('#solicitudesTable input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', (event) => {
+                const id = event.target.getAttribute('data-id');
+                const completado = event.target.checked ? 1 : 0;
+                ipcRenderer.send('update-completado', { id, completado });
+            });
         });
     });
 
