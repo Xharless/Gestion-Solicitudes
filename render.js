@@ -22,9 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
         tbody.innerHTML = '';
         solicitudes.forEach((solicitud) => {
             const row = document.createElement('tr');
+            const dateform = formatDate(solicitud.date);
+            const dateclass = DateDays(solicitud.date) ? 'highlight' : '';
             row.innerHTML = `
                 <td>${solicitud.id}</td>
-                <td>${solicitud.date}</td>
+                <td class="${dateclass}">${dateform}</td>
                 <td>${solicitud.tipo}</td>
                 <td>${solicitud.telefono}</td>
                 <td>${solicitud.informacion}</td>
@@ -64,3 +66,29 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.style.display = 'none';
     }
 });
+
+// -----------------------------    INICIO    ----------------------------- //
+// funcionalidad para resetear el formato de fecha
+function formatDate(dateString) {
+    if (!dateString) return '';
+    const [year, month, day] = dateString.split('-');
+    if (!day) {
+        // Si solo hay año y mes, establece el día en 01
+        return `${month}-${year}`;
+    }
+    const date = new Date(year, month - 1, day); // Usar Date.UTC para evitar problemas de zona horaria
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    return date.toLocaleDateString('es-ES', options);
+}
+// -----------------------------    FIN    ----------------------------- //
+
+// -----------------------------    INICIO    ----------------------------- //
+// funcion para marcar fechas
+function DateDays(dateString) {
+    const date = new Date(dateString);
+    const today = new Date();
+    const diffTime = date.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays < 15 || diffDays <= 0;
+}
+// -----------------------------    FIN    ----------------------------- //
