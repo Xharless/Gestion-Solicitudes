@@ -68,14 +68,18 @@ document.addEventListener('DOMContentLoaded', () => {
             //manejo de eventos para los botones de edicion
             document.querySelectorAll('.editBtn').forEach(editBtn => {
                 editBtn.addEventListener('click', (event) => {
-                    const id = event.target.getAttribute('data-id');
+                    const id = event.currentTarget.getAttribute('data-id');
                     const solicitud = solicitudes.find(s => s.id == id);
-                    document.getElementById('editId').value = solicitud.id;
-                    document.getElementById('editDate').value = solicitud.date;
-                    document.getElementById('editTipo').value = solicitud.tipo;
-                    document.getElementById('editTelefono').value = solicitud.telefono;
-                    document.getElementById('editInformacion').value = solicitud.informacion;
-                    openModal('editModal');
+                    if (solicitud) {
+                        document.getElementById('editId').value = solicitud.id;
+                        document.getElementById('editDate').value = solicitud.date;
+                        document.getElementById('editTipo').value = solicitud.tipo;
+                        document.getElementById('editTelefono').value = solicitud.telefono;
+                        document.getElementById('editInformacion').value = solicitud.informacion;
+                        openModal('editModal');
+                    } else {
+                        console.error('Solicitud no encontrada');
+                    }
                 });
             });
             
@@ -83,9 +87,12 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.delete-btn').forEach(button => {
                 button.addEventListener('click', (event) => {
                     const id = event.target.getAttribute('data-id');
-                    ipcRenderer.send('delete-solicitud', id);
+                    if(confirm(`¿Estás seguro de que deseas eliminar la derivación?`)){
+                        ipcRenderer.send('delete-solicitud', id);
+                    }
                 });
             });
+
         } else {
             tbody.innerHTML = '<tr><td colspan="7">No hay solicitudes registradas</td></tr>';
         }

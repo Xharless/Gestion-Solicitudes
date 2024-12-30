@@ -48,8 +48,9 @@ ipcMain.on('add-solicitud', (event, solicitud) => {
             console.error('Error al insertar datos:', err.message);
             event.reply('error', 'No se pudo insertar la solicitud.');
         } else {
-            console.log(`Fila insertada con el ID ${this.lastID}`);
+            
             sendSolicitudes();
+            
         }
     });
 });
@@ -70,7 +71,7 @@ ipcMain.on('edit-solicitud', (event, solicitud) => {
             console.error('Error al actualizar datos:', err.message);  
             event.reply('error', 'No se pudo actualizar la solicitud.');
         } else {
-            console.log(`Fila actualizada con el ID ${solicitud.id}`);
+            
             sendSolicitudes();
         }
     });
@@ -85,7 +86,7 @@ ipcMain.on('delete-solicitud', (event, id) => {
             console.error('Error al eliminar datos:', err.message);
             event.reply('error', 'No se pudo eliminar la solicitud.');
         } else {
-            console.log(`Fila eliminada con el ID ${id}`);
+            
             sendSolicitudes();
         }
     });
@@ -98,7 +99,7 @@ ipcMain.on('update-completado', (event, { id, completado }) => {
         if (err) {
             return console.log('Error al actualizar datos', err.message);
         }
-        console.log(`Fila actualizada con el ID ${id}`);
+        
         sendSolicitudes();
     });
 });
