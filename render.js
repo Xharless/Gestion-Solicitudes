@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const tipo = document.getElementById('tipo').value;
         const telefono = document.getElementById('telefono').value;
         const informacion = document.getElementById('informacion').value;
-        const completado = document.getElementById('completado').checked ? 1 : 0;
+        const completado = 0;
 
         const solicitud = { id, date, tipo, telefono, informacion, completado };
         ipcRenderer.send('add-solicitud', solicitud);
