@@ -90,9 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.delete-btn').forEach(button => {
                 button.addEventListener('click', (event) => {
                     const id = event.target.getAttribute('data-id');
-                    if(confirm(`¿Estás seguro de que deseas eliminar la derivación?`)){
-                        ipcRenderer.send('delete-solicitud', id);
-                    }
+                    ipcRenderer.send('delete-solicitud', id);
                 });
             });
 
