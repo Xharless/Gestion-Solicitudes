@@ -54,6 +54,45 @@ ipcMain.on('add-solicitud', (event, solicitud) => {
     });
 });
 
+
+//-----------------------------   Edicion de datos    ----------------------------- //
+ipcMain.on('edit-solicitud', (event, solicitud) => {
+    const query = `UPDATE solicitud SET date = ?, tipo = ?, telefono = ?, informacion = ? WHERE id = ?`;
+    const params = [
+        solicitud.date, 
+        solicitud.tipo, 
+        solicitud.telefono, 
+        solicitud.informacion, 
+        solicitud.id
+    ];
+    db.run(query, params, function(err) {
+        if (err) {
+            console.error('Error al actualizar datos:', err.message);  
+            event.reply('error', 'No se pudo actualizar la solicitud.');
+        } else {
+            console.log(`Fila actualizada con el ID ${solicitud.id}`);
+            sendSolicitudes();
+        }
+    });
+});
+//-----------------------------    FIN    ----------------------------- //
+
+//-----------------------------   Delete    ----------------------------- //
+ipcMain.on('delete-solicitud', (event, id) => {
+    const query = `DELETE FROM solicitud WHERE id = ?`;
+    db.run(query, id, function(err) {
+        if (err) {
+            console.error('Error al eliminar datos:', err.message);
+            event.reply('error', 'No se pudo eliminar la solicitud.');
+        } else {
+            console.log(`Fila eliminada con el ID ${id}`);
+            sendSolicitudes();
+        }
+    });
+});
+//-----------------------------    FIN    ----------------------------- //
+
+
 ipcMain.on('update-completado', (event, { id, completado }) => {
     db.run(`UPDATE solicitud SET completado = ? WHERE id = ?`, [completado, id], function(err) {
         if (err) {

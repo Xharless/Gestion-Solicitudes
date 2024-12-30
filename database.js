@@ -12,7 +12,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
             id INTEGER PRIMARY KEY,
             date TEXT,
             tipo TEXT,
-            telefono INTEGER,
+            telefono TEXT,
             informacion TEXT,
             completado INTEGER DEFAULT 0
         )`, (err) => {

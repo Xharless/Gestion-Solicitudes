@@ -14,56 +14,113 @@ document.addEventListener('DOMContentLoaded', () => {
         ipcRenderer.send('add-solicitud', solicitud);
         document.getElementById('solicitudForm').reset();
         
-        closeModal();
+        closeModal('solicitudModal');
     });
 
+    
+    //-----------------------------   Edicion de datos    ----------------------------- //
+    document.getElementById('editForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const id = document.getElementById('editId').value;
+        const date = document.getElementById('editDate').value;
+        const tipo = document.getElementById('editTipo').value;
+        const telefono = document.getElementById('editTelefono').value;
+        const informacion = document.getElementById('editInformacion').value;
+
+        const solicitud = { id, date, tipo, telefono, informacion };
+        ipcRenderer.send('edit-solicitud', solicitud);
+        
+        closeModal('editModal');
+    });
+
+    //-----------------------------    FIN    ----------------------------- //
     ipcRenderer.on('solicitudes', (event, solicitudes) => {
         const tbody = document.getElementById('solicitudesTable').querySelector('tbody');
         tbody.innerHTML = '';
-        solicitudes.forEach((solicitud) => {
-            const row = document.createElement('tr');
-            const dateform = formatDate(solicitud.date);
-            const dateclass = DateDays(solicitud.date) ? 'highlight' : '';
-            row.innerHTML = `
-                <td>${solicitud.id}</td>
-                <td class="${dateclass}">${dateform}</td>
-                <td>${solicitud.tipo}</td>
-                <td>${solicitud.telefono}</td>
-                <td>${solicitud.informacion}</td>
-                <td><input type="checkbox" ${solicitud.completado ? 'checked' : ''} data-id="${solicitud.id}"></td>
-            `;
-            tbody.appendChild(row);
-        });
-         // Agregar manejador de eventos para los checkboxes
-        document.querySelectorAll('#solicitudesTable input[type="checkbox"]').forEach(checkbox => {
-            checkbox.addEventListener('change', (event) => {
-                const id = event.target.getAttribute('data-id');
-                const completado = event.target.checked ? 1 : 0;
-                ipcRenderer.send('update-completado', { id, completado });
+        if(solicitudes.length >0){
+            solicitudes.forEach((solicitud) => {
+                const row = document.createElement('tr');
+                const dateform = formatDate(solicitud.date);
+                const dateclass = DateDays(solicitud.date) ? 'highlight' : '';
+                row.innerHTML = `
+                    <td>${solicitud.id}</td>
+                    <td class="${dateclass}">${dateform}</td>
+                    <td>${solicitud.tipo}</td>
+                    <td>${solicitud.telefono}</td>             
+                    <td>${solicitud.informacion}</td>
+                    <td><input type="checkbox" ${solicitud.completado ? 'checked' : ''} data-id="${solicitud.id}"></td>
+                    <td>
+                        <button class="editBtn" data-id="${solicitud.id}">Editar</button>
+                        <button class="delete-btn" data-id="${solicitud.id}">Eliminar</button>
+                    <td>
+                `;
+                tbody.appendChild(row);
             });
-        });
+            // Agregar manejador de eventos para los checkboxes
+            document.querySelectorAll('#solicitudesTable input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', (event) => {
+                    const id = event.target.getAttribute('data-id');
+                    const completado = event.target.checked ? 1 : 0;
+                    ipcRenderer.send('update-completado', { id, completado });
+                });
+            });
+
+            //manejo de eventos para los botones de edicion
+            document.querySelectorAll('.editBtn').forEach(editBtn => {
+                editBtn.addEventListener('click', (event) => {
+                    const id = event.target.getAttribute('data-id');
+                    const solicitud = solicitudes.find(s => s.id == id);
+                    document.getElementById('editId').value = solicitud.id;
+                    document.getElementById('editDate').value = solicitud.date;
+                    document.getElementById('editTipo').value = solicitud.tipo;
+                    document.getElementById('editTelefono').value = solicitud.telefono;
+                    document.getElementById('editInformacion').value = solicitud.informacion;
+                    openModal('editModal');
+                });
+            });
+            
+            //manejo de eventos para lod botones de eliminacion
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const id = event.target.getAttribute('data-id');
+                    ipcRenderer.send('delete-solicitud', id);
+                });
+            });
+        } else {
+            tbody.innerHTML = '<tr><td colspan="7">No hay solicitudes registradas</td></tr>';
+        }
+
     });
 
     const modal = document.getElementById('solicitudModal');
+    const editModal = document.getElementById('editModal');
     const openModalBtn = document.getElementById('openModalBtn');
-    const closeModalSpan = document.getElementsByClassName('close')[0];
+    const closeModalSpans = document.querySelectorAll('.close');
 
     openModalBtn.onclick = function() {
-        modal.style.display = 'block';
+        openModal('solicitudModal');
     }
 
-    closeModalSpan.onclick = function() {
-        modal.style.display = 'none';
-    }
+    closeModalSpans.forEach(span => {
+        span.onclick = function() {
+            closeModal(span.closest('.modal').id);
+        }
+    });
 
     window.onclick = function(event) {
         if (event.target == modal) {
-            modal.style.display = 'none';
+            closeModal('solicitudModal');
+        } else if (event.target == editModal) {
+            closeModal('editModal');
         }
     }
 
-    function closeModal() {
-        modal.style.display = 'none';
+    function openModal(modalId) {
+        document.getElementById(modalId).style.display = 'block';
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
     }
 });
 
@@ -89,6 +146,6 @@ function DateDays(dateString) {
     const today = new Date();
     const diffTime = date.getTime() - today.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays < 15 || diffDays <= 0;
+    return diffDays <= 5 || diffDays <= 0;
 }
 // -----------------------------    FIN    ----------------------------- //

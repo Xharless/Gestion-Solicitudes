@@ -19,17 +19,31 @@
                 <label for="date">Fecha:</label>
                 <input type="date" id="date" name="date" required>
                 <label for="tipo">Tipo:</label>
-                <select id="tipo" name="tipo" required>
-                    <option value="">Seleccione un opción</option>
-                    <option value="1">Tipo 1</option>
-                    <option value="2">Tipo 2</option>
-                    <option value="3">Tipo 3</option>
-                </select>  
+                <input type="text" id="tipo" name="tipo" required> 
                 <label for="telefono">Teléfono:</label>
                 <input type="text" id="telefono" name="telefono" required>
                 <label for="informacion">Comentarios:</label>
                 <textarea id="informacion" name="informacion" required></textarea>
                 <button type="submit">Agregar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Solicitud de edicion-->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <form id="editForm">
+                <input type="hidden" id="editId" name="id">
+                <label for="editDate">Fecha:</label>
+                <input type="date" id="editDate" name="date" required>
+                <label for="editTipo">Tipo:</label>
+                <input type="text" id="editTipo" name="editTipo" required> 
+                <label for="editTelefono">Teléfono:</label>
+                <input type="text" id="editTelefono" name="telefono" required>
+                <label for="editInformacion">Comentarios:</label>
+                <textarea id="editInformacion" name="informacion" required></textarea>
+                <button type="submit">Guardar Cambios</button>
             </form>
         </div>
     </div>
@@ -42,7 +56,7 @@
                 <th>Tipo</th>
                 <th>Teléfono</th>
                 <th>Comentarios</th>
-                <th>Completado</th>
+                <th>Estado</th>
             </tr>
         </thead>
         <tbody>
