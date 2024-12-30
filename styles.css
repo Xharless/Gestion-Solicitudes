@@ -7,7 +7,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     height: 100vh;
 }
 
@@ -72,9 +72,59 @@ button:hover {
     cursor: pointer;
 }
 
+/* Form styles */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form label {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="number"],
+form input[type="date"],
+form textarea {
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+form textarea {
+    resize: vertical;
+}
+
+form input[type="checkbox"] {
+    margin-top: 10px;
+}
+
+form button[type="submit"] {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+form button[type="submit"]:hover {
+    background-color: #218838;
+}
+
 /* Table styles */
 table {
-    width: 80%;
+    width: 90%;
     border-collapse: collapse;
     margin: 20px 0;
     font-size: 18px;
@@ -97,4 +147,8 @@ table tr:nth-child(even) {
 
 table tr:hover {
     background-color: #ddd;
+}
+
+table td:nth-child(6) {
+    width: 5%; /* Adjust the width as needed */
 }

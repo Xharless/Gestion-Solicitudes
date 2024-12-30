@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const solicitud = { id, date, tipo, telefono, informacion, completado };
         ipcRenderer.send('add-solicitud', solicitud);
+        document.getElementById('solicitudForm').reset();
         
         closeModal();
     });
