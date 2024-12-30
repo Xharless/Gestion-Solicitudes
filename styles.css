@@ -157,3 +157,14 @@ table td:nth-child(6) {
     color: red;
     font-weight: bold;
 }
+/* Background image styles */
+.background-image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40%;
+    height: auto;
+    opacity: 0.1; /* Adjust the opacity as needed */
+    z-index: -1; /* Ensure the image is behind other content */
+}
