@@ -90,7 +90,23 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.delete-btn').forEach(button => {
                 button.addEventListener('click', (event) => {
                     const id = event.target.getAttribute('data-id');
-                    ipcRenderer.send('delete-solicitud', id);
+                    Swal.fire({
+                        title: '¿Estás seguro?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Sí, eliminarlo!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            ipcRenderer.send('delete-solicitud', id);
+                            Swal.fire(
+                                'Eliminado!',
+                                'La solicitud ha sido eliminada.',
+                                'success'
+                            );
+                        }
+                    });
                 });
             });
 
