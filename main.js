@@ -1,10 +1,11 @@
-const { app, BrowserWindow } = require('electron')
-const path = require('path')
-const sqlite3 = require('sqlite3').verbose();
+const { app, BrowserWindow, ipcMain } = require('electron');
+const path = require('path');
+const db = require('./database'); // Uso de la misma conexión
 
+let mainWindow;
 
 const createWindow = () => {
-    let win = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
         webPreferences: {
@@ -13,37 +14,64 @@ const createWindow = () => {
             webSecurity: false
         },
         icon: path.join(__dirname, 'IMG', 'logo.ico')
-    })
-    win.loadFile('index.html');
-    
-    win.maximize();
-    win.on('closed', () => {
-        win = null;
     });
-}
-app.on('ready', () => {
-    createWindow();
-    // Determinar la ruta de la base de datos
-    const dbPath = path.join(app.getPath('userData'), 'database.sqlite');
-    // Copiar la base de datos al directorio de datos del usuario si no existe
-    const fs = require('fs');
-    if (!fs.existsSync(dbPath)) {
-        fs.copyFileSync(path.join(__dirname, 'database.sqlite'), dbPath);
-    }
-    // Abrir la base de datos
-    db = new sqlite3.Database(dbPath, (err) => {
+    mainWindow.loadFile('index.html');
+
+    mainWindow.maximize();
+    mainWindow.on('closed', () => {
+        mainWindow = null;
+    });
+
+    // Llamar a sendSolicitudes cuando la ventana esté lista
+    mainWindow.webContents.on('did-finish-load', () => {
+        sendSolicitudes();
+    });
+};
+
+app.on('ready', createWindow);
+
+// Insertar los datos de la solicitud en la BD
+ipcMain.on('add-solicitud', (event, solicitud) => {
+    console.log('Datos recibidos para insertar:', solicitud);
+    const query = `INSERT INTO solicitud (id, date, tipo, telefono, informacion, completado) VALUES (?, ?, ?, ?, ?, ?)`;
+    const params = [
+        solicitud.id,
+        solicitud.date,
+        solicitud.tipo,
+        solicitud.telefono,
+        solicitud.informacion,
+        solicitud.completado
+    ];
+
+    db.run(query, params, function (err) {
         if (err) {
-            console.error('Error opening database', err.message);
+            console.error('Error al insertar datos:', err.message);
+            event.reply('error', 'No se pudo insertar la solicitud.');
         } else {
-            console.log('Database opened successfully');
+            console.log(`Fila insertada con el ID ${this.lastID}`);
+            sendSolicitudes();
         }
     });
 });
+
+// Mostrar los datos en la tabla
+function sendSolicitudes() {
+    db.all(`SELECT * FROM solicitud`, [], (err, rows) => {
+        if (err) {
+            console.error('Error al recuperar datos:', err.message);
+        } else {
+            console.log('Datos obtenidos de la BD:', rows);
+            BrowserWindow.getAllWindows().forEach(win => {
+                win.webContents.send('solicitudes', rows);
+            });
+        }
+    });
+}
+
+
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit();
     }
 });
-
-app.on('ready', createWindow);
