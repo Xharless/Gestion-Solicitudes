@@ -151,6 +151,11 @@ table tr:hover {
 
 table td:nth-child(6) {
     width: 5%; /* Adjust the width as needed */
+    text-align: center;
+}
+table td:nth-child(7) {
+    width: 12%; /* Adjust the width as needed */
+    text-align: center;
 }
 
 .highlight {
@@ -168,3 +173,41 @@ table td:nth-child(6) {
     opacity: 0.1; /* Adjust the opacity as needed */
     z-index: -1; /* Ensure the image is behind other content */
 }
+/* Button styles */
+
+
+button.editBtn {
+    background-color: #43a047; /* Verde más vivo */
+    color: #fff;
+}
+
+button.editBtn:hover {
+    background-color: #388e3c;
+}
+
+button.delete-btn {
+    background-color: #e53935; /* Rojo más vivo */
+    color: #fff;
+}
+
+button.delete-btn:hover {
+    background-color: #d32f2f;
+}
+
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 20px; /* Adjust the width as needed */
+    height: 20px; /* Adjust the height as needed */
+    background-color: #fff;
+    border: 2px solid #007bff;
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #007bff;
+}
+

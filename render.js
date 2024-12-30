@@ -50,9 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${solicitud.informacion}</td>
                     <td><input type="checkbox" ${solicitud.completado ? 'checked' : ''} data-id="${solicitud.id}"></td>
                     <td>
-                        <button class="editBtn" data-id="${solicitud.id}">Editar</button>
-                        <button class="delete-btn" data-id="${solicitud.id}">Eliminar</button>
-                    <td>
+                        <button class="editBtn" data-id="${solicitud.id}"><i class="fas fa-edit"></i></button>
+                        <button class="delete-btn" data-id="${solicitud.id}"><i class="fas fa-trash"></i></button></button>
+                    </td>
                 `;
                 tbody.appendChild(row);
             });
