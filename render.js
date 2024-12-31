@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
-                        confirmButtonText: 'Sí, eliminarlo!'
+                        confirmButtonText: 'Eliminar'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             ipcRenderer.send('delete-solicitud', id);
@@ -161,6 +161,26 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById(modalId).style.display = 'none';
     }
 });
+
+//------------- Mensaje edicion ---------------------- //
+ipcRenderer.on('solicitud-editada', (event, message) => {
+    Swal.fire({
+        icon: 'success',
+        title: 'Edición Exitosa',
+        text: message,
+        showConfirmButton: false,
+        timer: 1500
+    });
+});
+
+ipcRenderer.on('error-editar', (event, message) => {
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: message
+    });
+});
+// ---------------------- FIN ------------------------------- //
 
 // -----------------------------    INICIO    ----------------------------- //
 // funcionalidad para resetear el formato de fecha

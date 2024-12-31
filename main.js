@@ -73,6 +73,7 @@ ipcMain.on('edit-solicitud', (event, solicitud) => {
         } else {
             
             sendSolicitudes();
+            event.reply('solicitud-editada', 'La solicitud ha sido actualizada correctamente.');
         }
     });
 });
