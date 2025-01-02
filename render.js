@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${solicitud.tipo}</td>
                     <td>${solicitud.telefono}</td>   
                     <td class="tooltip-container">
-                        ${solicitud.informacion.length > 20 ? solicitud.informacion.substring(0, 20) + '...' : solicitud.informacion}
+                        ${solicitud.informacion.length > 30 ? solicitud.informacion.substring(0, 30) + '...' : solicitud.informacion}
                         <div class="tooltip">${solicitud.informacion}</div>
                     </td>
                     <td><input type="checkbox" ${solicitud.completado ? 'checked' : ''} data-id="${solicitud.id}"></td>
