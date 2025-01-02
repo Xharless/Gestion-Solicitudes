@@ -1,8 +1,9 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
-const db = require('./database'); // Uso de la misma conexión
+const initializeDatabase = require('./database'); // Uso de la misma conexión
 
 let mainWindow;
+let db;
 
 const createWindow = () => {
     mainWindow = new BrowserWindow({
@@ -28,7 +29,10 @@ const createWindow = () => {
     });
 };
 
-app.on('ready', createWindow);
+app.on('ready', () => {
+    db = initializeDatabase(app); // Inicializar la base de datos cuando la aplicación esté lista
+    createWindow();
+});
 
 // Insertar los datos de la solicitud en la BD
 ipcMain.on('add-solicitud', (event, solicitud) => {

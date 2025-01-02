@@ -11,4 +11,4 @@ App sobre gestión de solicitudes echa con Electron como Frontend Framework y sq
 - Para empaquetar la app primero debemos hacer:
   1. npm install --save-dev electron-builder
   2. Luego modificar el package.json
-  3. npm run dist
+  3. npm run build

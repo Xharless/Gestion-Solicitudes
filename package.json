@@ -1,28 +1,45 @@
 {
   "name": "gestion-solicitudes",
   "version": "1.0.0",
-  "description": "App sobre gestión de solicitudes echa con Electron como Frontend Framework y sqlite3 como BD",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Xharless/Gestion-Solicitudes.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/Xharless/Gestion-Solicitudes/issues"
-  },
-  "homepage": "https://github.com/Xharless/Gestion-Solicitudes#readme",
-  "devDependencies": {
-    "electron": "^33.2.1"
+  "build": {
+    "win": {
+      "target": "nsis",
+      "icon": "IMG/logo.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Solicitudes"
+    },
+    "files": [
+      "main.js",
+      "render.js",
+      "index.html",
+      "styles.css",
+      "solicitudes.sqlite",
+      "database.js",
+      "node_modules/**/*",
+      "IMG/**/*"
+    ],
+    "directories": {
+      "buildResources": "build"
+    }
   },
   "dependencies": {
     "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8",
+    "electron-packager": "^17.1.2"
   }
 }
